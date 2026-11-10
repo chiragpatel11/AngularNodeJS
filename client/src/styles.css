@@ -1,0 +1,27 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #f4f6f8;
+  color: #1c1b1f;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: min(420px, 100%);
+}
+
+.form-error {
+  color: #b3261e;
+  margin: 0 0 12px;
+}

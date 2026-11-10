@@ -1,0 +1,94 @@
+<main class="page">
+  <header class="toolbar">
+    <div>
+      <h1>Tasks</h1>
+      @if (userEmail(); as user) {
+        <p>{{ user.email }}</p>
+      }
+    </div>
+    <button mat-stroked-button type="button" (click)="logout()">Log out</button>
+  </header>
+
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ editingId() ? 'Edit task' : 'Add a task' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <mat-form-field appearance="outline">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" />
+          @if (form.controls.title.touched && form.controls.title.invalid) {
+            <mat-error>Title is required.</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Notes</mat-label>
+          <textarea matInput rows="3" formControlName="notes"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Due date</mat-label>
+          <input matInput type="date" formControlName="dueDate" />
+        </mat-form-field>
+        <div class="form-actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="saving()">
+            {{ saving() ? 'Saving…' : editingId() ? 'Save changes' : 'Add task' }}
+          </button>
+          @if (editingId()) {
+            <button mat-button type="button" (click)="cancelEdit()">Cancel</button>
+          }
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  @if (loading()) {
+    <p class="status">Loading tasks…</p>
+  } @else if (loadError()) {
+    <div class="status">
+      <p class="form-error">{{ loadError() }}</p>
+      <button mat-stroked-button type="button" (click)="load()">Try again</button>
+    </div>
+  } @else if (tasks().length === 0) {
+    <p class="status">No tasks yet. Add one above.</p>
+  } @else {
+    <table mat-table [dataSource]="tasks()">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Title</th>
+        <td mat-cell *matCellDef="let task">
+          <div [class.completed]="task.completed">{{ task.title }}</div>
+          @if (task.notes) {
+            <div class="notes">{{ task.notes }}</div>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dueDate">
+        <th mat-header-cell *matHeaderCellDef>Due</th>
+        <td mat-cell *matCellDef="let task">{{ dueLabel(task.dueDate) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="completed">
+        <th mat-header-cell *matHeaderCellDef>Done</th>
+        <td mat-cell *matCellDef="let task">
+          <mat-checkbox
+            [checked]="task.completed"
+            (change)="setCompleted(task, $event)"
+            [aria-label]="'Mark ' + task.title + ' complete'"
+          ></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let task">
+          <button mat-button type="button" (click)="startEdit(task)">Edit</button>
+          <button mat-button type="button" (click)="remove(task)">Delete</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    </table>
+  }
+</main>

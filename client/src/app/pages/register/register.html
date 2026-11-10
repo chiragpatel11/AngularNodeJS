@@ -1,0 +1,35 @@
+<main class="auth-page">
+  <mat-card class="auth-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Create account</mat-card-title>
+      <mat-card-subtitle>Register with an email and a password of at least 8 characters.</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      @if (errorMessage()) {
+        <p class="form-error">{{ errorMessage() }}</p>
+      }
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="email" />
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <mat-error>Enter a valid email.</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" autocomplete="new-password" />
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <mat-error>Password must be at least 8 characters.</mat-error>
+          }
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" [disabled]="submitting()">
+          {{ submitting() ? 'Creating account…' : 'Create account' }}
+        </button>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button routerLink="/login">Already have an account? Log in</a>
+    </mat-card-actions>
+  </mat-card>
+</main>

@@ -1,0 +1,56 @@
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.toolbar h1,
+.toolbar p {
+  margin: 0;
+}
+
+.toolbar p {
+  color: #5c5c5c;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.status {
+  margin-top: 24px;
+}
+
+table {
+  width: 100%;
+  margin-top: 24px;
+  background: white;
+}
+
+.notes {
+  color: #5c5c5c;
+  white-space: pre-wrap;
+}
+
+.completed {
+  text-decoration: line-through;
+}
